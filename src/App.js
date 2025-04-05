@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { TonConnectButton, useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
 
-function App() {
+const App = () => {
+  const [userInfo, setUserInfo] = useState(null);
+  const [webApp, setWebApp] = useState(null);
+  const wallet = useTonWallet();
+  const [tonConnectUI] = useTonConnectUI();
+
+  useEffect(() => {
+    const tg = window.Telegram.WebApp;
+    tg.ready();
+    tg.expand();
+    setWebApp(tg);
+    setUserInfo(tg.initDataUnsafe?.user || null);
+  }, []);
+
+  const handleMineClick = () => {
+    if (!wallet) {
+      alert("TON 지갑을 먼저 연결해주세요.");
+      return;
+    }
+    alert("채굴 시작! (지갑 주소: " + wallet.account.address + ")");
+    // TODO: 채굴 로직 연결 예정
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{ padding: 20 }}>
+      <h2>TON 채굴 Web App</h2>
+
+      {userInfo ? (
+        <div>
+          <p><strong>이름:</strong> {userInfo.first_name}</p>
+          <p><strong>Telegram ID:</strong> {userInfo.id}</p>
+        </div>
+      ) : (
+        <p>유저 정보를 불러오는 중...</p>
+      )}
+
+      <div style={{ margin: "20px 0" }}>
+        <TonConnectButton />
+      </div>
+
+      <button onClick={handleMineClick}>채굴 시작</button>
     </div>
   );
-}
+};
 
 export default App;
