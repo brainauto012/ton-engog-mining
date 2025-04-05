@@ -3,15 +3,12 @@ import { TonConnectButton, useTonConnectUI, useTonWallet } from "@tonconnect/ui-
 
 const App = () => {
   const [userInfo, setUserInfo] = useState(null);
-  const [webApp, setWebApp] = useState(null);
   const wallet = useTonWallet();
-  const [tonConnectUI] = useTonConnectUI();
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
-    setWebApp(tg);
     setUserInfo(tg.initDataUnsafe?.user || null);
   }, []);
 
