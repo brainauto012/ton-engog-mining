@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { TonConnectButton, useTonConnectUI, useTonWallet } from "@tonconnect/ui-react";
+import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
 
 const App = () => {
   const [userInfo, setUserInfo] = useState(null);
