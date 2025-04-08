@@ -1,9 +1,8 @@
 {
-    "url": "http://localhost:3000",
-    "name": "TON 채굴 테스트",
-    "iconUrl": "https://raw.githubusercontent.com/ton-connect/demo-dapp-with-react/main/public/logo.svg",
-    "manifestVersion": "0.1.0",
-    "appVersion": "0.0.1",
-    "platforms": ["web"]
-}
-  
+    "url": "https://engog.netlify.app",
+    "name": "$ENGOG Mining WebApp",
+    "iconUrl": "https://engog.netlify.app/logo.png",
+    "termsOfUseUrl": "https://engog.netlify.app/terms",
+    "privacyPolicyUrl": "https://engog.netlify.app/privacy",
+    "tonProof": false
+  }
