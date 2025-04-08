@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
+import { useTonWallet } from "@tonconnect/ui-react";
+import WalletConnector from "./components/WalletConnector";
 
 const App = () => {
   const [userInfo, setUserInfo] = useState(null);
@@ -18,13 +19,11 @@ const App = () => {
       return;
     }
     alert("채굴 시작! (지갑 주소: " + wallet.account.address + ")");
-    // TODO: 채굴 로직 연결 예정
   };
 
   return (
     <div style={{ padding: 20 }}>
       <h2>TON 채굴 Web App</h2>
-
       {userInfo ? (
         <div>
           <p><strong>이름:</strong> {userInfo.first_name}</p>
@@ -33,11 +32,7 @@ const App = () => {
       ) : (
         <p>유저 정보를 불러오는 중...</p>
       )}
-
-      <div style={{ margin: "20px 0" }}>
-        <TonConnectButton />
-      </div>
-
+      <WalletConnector />
       <button onClick={handleMineClick}>채굴 시작</button>
     </div>
   );
