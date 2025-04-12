@@ -29,7 +29,7 @@ const App: React.FC = () => {
     const tg = window.Telegram.WebApp;
     tg.ready();
     tg.expand();
-    setUserInfo(tg.initDataUnsafe?.user || null);
+    setUserInfo(tg.initDataUnsafe?.user as TelegramUser || null);
   }, []);
 
   useEffect(() => {
