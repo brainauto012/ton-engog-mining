@@ -1,7 +1,7 @@
 import React from "react";
 import { TonConnectButton } from "@tonconnect/ui-react";
 
-const WalletConnector = () => {
+export const WalletConnector: React.FC = () => {
   return (
     <div style={{ margin: "20px 0" }}>
       <TonConnectButton />
@@ -10,4 +10,3 @@ const WalletConnector = () => {
 };
 
 export default WalletConnector;
-
