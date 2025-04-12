@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MiningCard } from "./components/MiningCard"; // MiningCard 가져오기
 import { useTonWallet } from "@tonconnect/ui-react";
 import { getMiningStatus, claimPoints } from "./api/miningApi";
 
 const App: React.FC = () => {
   const [points, setPoints] = useState(0);
-  const [lastMinedAt, setLastMinedAt] = useState("");
   const wallet = useTonWallet();
   const walletAddress = wallet?.account?.address;
 
@@ -14,7 +13,7 @@ const App: React.FC = () => {
     try {
       const status = await getMiningStatus(walletAddress);
       setPoints(status.points);
-      setLastMinedAt(status.lastMinedAt);
+      //setLastMinedAt(status.lastMinedAt);
     } catch (err) {
       console.error("Failed to get mining info", err);
     }
