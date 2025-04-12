@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import React from 'react';
 import { MiningCard } from '../components/MiningCard';
 import { TonConnectButton, useTonConnectUI, useTonWallet } from '@tonconnect/ui-react';
 
@@ -7,22 +6,19 @@ export default function Home() {
   const wallet = useTonWallet();
   const [walletAddress, setWalletAddress] = useState('');
   const [points, setPoints] = useState(0);
-  const [_, setTonConnectUI] = useTonConnectUI();
 
-  // 지갑 주소가 연결되면 상태 업데이트
   useEffect(() => {
     if (wallet?.account?.address) {
       setWalletAddress(wallet.account.address);
     }
   }, [wallet]);
 
-  // 백엔드에서 포인트 불러오기
   useEffect(() => {
     const fetchPoints = async () => {
       if (!walletAddress) return;
 
       try {
-        const res = await fetch(`https://YOUR_RENDER_BACKEND_URL/mining/status?walletAddress=${walletAddress}`);
+        const res = await fetch(`https://ton-engog-mining-backend.onrender.com/mining/status?walletAddress=${walletAddress}`);
         const data = await res.json();
         setPoints(data.points || 0);
       } catch (err) {
@@ -33,10 +29,9 @@ export default function Home() {
     fetchPoints();
   }, [walletAddress]);
 
-  // Claim 버튼 클릭 핸들러
   const handleClaim = async () => {
     try {
-      const res = await fetch(`https://YOUR_RENDER_BACKEND_URL/mining/claim`, {
+      const res = await fetch(`https://ton-engog-mining-backend.onrender.com/mining/claim`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ walletAddress }),
