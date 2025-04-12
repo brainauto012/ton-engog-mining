@@ -30,8 +30,12 @@ const App: React.FC = () => {
   }, []);
 
   const handleMineClick = async () => {
-    if (!walletAddress) return;
+    if (!walletAddress) {
+      alert("TON 지갑을 먼저 연결해주세요.");
+      return;
+    }
     try {
+      alert("채굴 시작! (지갑 주소: " + wallet.account.address + ")");
       const status = await getMiningStatus(walletAddress);
       setPoints(status.points);
       //setLastMinedAt(status.lastMinedAt);
