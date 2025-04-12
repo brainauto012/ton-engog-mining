@@ -28,7 +28,7 @@ export const MiningCard: React.FC<MiningCardProps> = ({ walletAddress, points, o
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-md mx-auto text-center relative">
       <div className="flex items-center justify-center space-x-2 mb-4">
-        <FaCoins className="text-yellow-500 text-2xl" />
+        {FaCoins({ className: "text-yellow-500 text-2xl" })}
         <span className="text-xl font-bold">{points} P</span>
       </div>
       <p className="text-gray-600 mb-2">
