@@ -14,19 +14,5 @@ export const useTonWalletManager = () => {
     }
   }, [tonWallet, setWalletAddress]);
 
-    const handleClaim = async () => {
-      const res = await fetch(`https://ton-engog-mining-backend.onrender.com/mining/claim`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ walletAddress }),
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      alert(`${data.claimedPoints} 포인트가 클레임되었습니다.`);
-      setPoints(0);
-    }
-  };
-
-  return { walletAddress, points, handleClaim };
+  return { walletAddress };
 };

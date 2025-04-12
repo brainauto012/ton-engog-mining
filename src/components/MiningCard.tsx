@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { Button } from './ui/Button';
-import { motion } from 'framer-motion';
-import { FaCoins } from 'react-icons/fa';
+// components/MiningCard.tsx
+import React, { useEffect, useState } from "react";
+import { Button } from "./ui/Button";
+import { motion } from "framer-motion";
+import { FaCoins } from "react-icons/fa";
 
 interface MiningCardProps {
   walletAddress: string;
   points: number;
   onClaim: () => void;
+  onMine: () => void;
 }
 
-export const MiningCard: React.FC<MiningCardProps> = ({ walletAddress, points, onClaim }) => {
+export const MiningCard: React.FC<MiningCardProps> = ({
+  walletAddress,
+  points,
+  onClaim,
+  onMine,
+}) => {
   const [showAnimation, setShowAnimation] = useState(false);
 
-  const handleClaim = () => {
+  const handleClaimClick = () => {
     setShowAnimation(true);
     onClaim();
   };
@@ -33,7 +40,10 @@ export const MiningCard: React.FC<MiningCardProps> = ({ walletAddress, points, o
       <p className="text-gray-600 mb-2">
         Wallet: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
       </p>
-      <Button onClick={handleClaim}>Claim</Button>
+      <div className="space-x-2">
+        <Button onClick={onMine}>⛏️ Mine</Button>
+        <Button onClick={handleClaimClick}>💸 Claim</Button>
+      </div>
 
       {showAnimation && (
         <motion.div
