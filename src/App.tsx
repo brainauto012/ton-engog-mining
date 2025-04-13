@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { MiningCard } from "./components/MiningCard"; // MiningCard 가져오기
 import { useTonWallet } from "@tonconnect/ui-react";
-import { getMiningStatus, claimPoints } from "./api/miningApi";
+import { startMining, getMiningStatus, claimPoints } from "./api/miningApi";
 import WalletConnector from "./components/WalletConnector";
+
+
 
 declare global {
   interface Window {
@@ -21,6 +23,7 @@ const App: React.FC = () => {
   const wallet = useTonWallet();
   const walletAddress = wallet?.account?.address;
   const [userInfo, setUserInfo] = useState<TelegramUser | null>(null);
+  const [isMiningStarted, setIsMiningStarted] = useState(false);
 
   useEffect(() => {
     const tg = window.Telegram.WebApp;
@@ -36,11 +39,12 @@ const App: React.FC = () => {
     }
     try {
       alert("채굴 시작! (지갑 주소: " + wallet.account.address + ")");
-      const status = await getMiningStatus(walletAddress);
+      const status = await startMining(walletAddress);
       setPoints(status.points);
+      setIsMiningStarted(true);
       //setLastMinedAt(status.lastMinedAt);
     } catch (err) {
-      console.error("Failed to get mining info", err);
+      console.error("채굴 시작 실패!", err);
     }
   };
 
@@ -54,6 +58,24 @@ const App: React.FC = () => {
       console.error("Claim 실패:", err);
     }
   };
+
+  useEffect(() => {
+    const fetchStatus = async () => {
+      if (!walletAddress) return;
+      try {
+        const res = await getMiningStatus(walletAddress);
+        setPoints(res.points);
+        setIsMiningStarted(res.isMining); // 👈 API가 isMining 필드를 리턴한다고 가정
+      } catch (err) {
+        console.log('상태 조회 실패:', err);
+      }
+    };
+  
+    fetchStatus(); // 최초 1회 호출
+  
+    const interval = setInterval(fetchStatus, 10000); // 10초마다 polling
+    return () => clearInterval(interval);
+  }, [walletAddress]);
 
 
   return (
@@ -74,6 +96,7 @@ const App: React.FC = () => {
         points={points}
         onMine={handleMineClick}
         onClaim={handleClaimClick}
+        isMiningStarted={isMiningStarted} // 👈 props로 전달
       />
     ) : (
       <p>지갑을 연결해주세요</p>

@@ -8,7 +8,8 @@ interface MiningCardProps {
   walletAddress: string;
   points: number;
   onClaim: () => void;
-  onMine: () => void;
+  onMine: () => Promise<void>; // 비동기 처리
+  isMiningStarted: boolean; // 👈 추가
 }
 
 export const MiningCard: React.FC<MiningCardProps> = ({
@@ -18,10 +19,21 @@ export const MiningCard: React.FC<MiningCardProps> = ({
   onMine,
 }) => {
   const [showAnimation, setShowAnimation] = useState(false);
+  const [isMiningStarted, setIsMining] = useState(false);
 
   const handleClaimClick = () => {
     setShowAnimation(true);
     onClaim();
+  };
+
+  const handleMineClick = async () => {
+    setIsMining(true);
+    try {
+      await onMine(); // 외부에서 startMining 호출
+    } catch (err) {
+      console.error("채굴 시작 중 에러:", err);
+      setIsMining(false); // 실패 시 다시 활성화
+    }
   };
 
   useEffect(() => {
@@ -41,7 +53,9 @@ export const MiningCard: React.FC<MiningCardProps> = ({
         Wallet: {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
       </p>
       <div className="space-x-2">
-        <Button onClick={onMine}>⛏️ Mine</Button>
+        <Button onClick={handleMineClick} disabled={isMiningStarted}>
+          {isMiningStarted ? "⛏️ Mining..." : "⛏️ Mine"}
+        </Button>
         <Button onClick={handleClaimClick}>💸 Claim</Button>
       </div>
 
