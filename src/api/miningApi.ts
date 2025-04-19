@@ -21,11 +21,24 @@ export const getMiningStatus = async (walletAddress: string) => {
 };
 
 export const claimPoints = async (walletAddress: string) => {
+  console.log("🚀 [claimPoints] API 요청 시작:", walletAddress);
+  console.log("👉 요청 URL:", `${API_BASE_URL}/mining/claim`);
+
   const res = await fetch(`${API_BASE_URL}/mining/claim`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ walletAddress }),
   });
-  if (!res.ok) throw new Error("Failed to claim points");
-  return await res.json();
+
+  console.log("🌐 [claimPoints] 응답 상태코드:", res.status);
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("❌ [claimPoints] 실패 응답:", errorText);
+    throw new Error("Failed to claim points");
+  }
+
+  const result = await res.json();
+  console.log("✅ [claimPoints] 성공 응답:", result);
+  return result;
 };
